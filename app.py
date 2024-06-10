@@ -18,26 +18,24 @@ if st.button("検索"):
     headers = {'User-Agent': 'Mozilla/5.0'}
     response = requests.get(url, headers=headers)
 
-    if response.status_code == 200:
 
-        data = response.json()
+    data = response.json()
 
-        # 検索ワードのフィルタリング・必要なデータに絞る
-        filtered_posts = [
-            {
-                'title': post['data']['title'],
-                'url_overridden_by_dest': post['data'].get('url_overridden_by_dest', None),
-                'permalink': post['data']['permalink'],
-                'url': post['data']['url']
-            }
-            for post in data['data']['children'] if keyword in post['data']['title']
-        ]
+    # 検索ワードのフィルタリング・必要なデータに絞る
+    filtered_posts = [
+        {
+            'title': post['data']['title'],
+            'url_overridden_by_dest': post['data'].get('url_overridden_by_dest', None),
+            'permalink': post['data']['permalink'],
+            'url': post['data']['url']
+        }
+        for post in data['data']['children'] if keyword in post['data']['title']
+    ]
 
-        # 結果を表示
-        if filtered_posts:
-            st.write(f"検索結果 ({len(filtered_posts)} 件):")
-            st.json(filtered_posts)
-        else:
-            st.write("指定されたキーワードを含む投稿は見つかりませんでした。")
+    # 結果を表示
+    if filtered_posts:
+        st.write(f"検索結果 ({len(filtered_posts)} 件):")
+        st.json(filtered_posts)
     else:
-        st.write("トピックが見つかりませんでした。URLを確認してください。")
+        st.write("指定されたキーワードを含む投稿は見つかりませんでした。")
+   
